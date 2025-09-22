@@ -1,0 +1,17 @@
+<svg width="800" height="800" xmlns="http://www.w3.org/2000/svg">
+        <rect width="100%" height="100%" fill="#374151"/>
+        <defs>
+            <style>
+                .title { font-family: Arial, sans-serif; font-size: 36px; font-weight: bold; }
+                .subtitle { font-family: Arial, sans-serif; font-size: 18px; }
+                .dimension { font-family: Arial, sans-serif; font-size: 14px; }
+            </style>
+        </defs>
+        <text x="50%" y="40%" text-anchor="middle" class="title" fill="#ffffff">Blazer Detalle</text>
+        <text x="50%" y="50%" text-anchor="middle" class="subtitle" fill="#ffffff">Vista Detalle</text>
+        <text x="50%" y="65%" text-anchor="middle" class="dimension" fill="#ffffff">800 x 800</text>
+        <circle cx="50" cy="50" r="20" fill="#ffffff" opacity="0.1"/>
+        <circle cx="750" cy="50" r="20" fill="#ffffff" opacity="0.1"/>
+        <circle cx="50" cy="750" r="20" fill="#ffffff" opacity="0.1"/>
+        <circle cx="750" cy="750" r="20" fill="#ffffff" opacity="0.1"/>
+    </svg>

@@ -1,0 +1,29 @@
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+      <!-- Fondo -->
+      <rect width="400" height="300" fill="#f8d7da"/>
+
+      <!-- Borde -->
+      <rect x="2" y="2" width="396" height="296" fill="none" stroke="#f5c6cb" stroke-width="2"/>
+
+      <!-- Icono de error -->
+      <circle cx="200" cy="120" r="30" fill="#721c24" opacity="0.8"/>
+      <text x="200" y="130" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="white" font-weight="bold">!</text>
+
+      <!-- Texto principal -->
+      <text x="200" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#721c24" font-weight="bold">
+        Error generando preview
+      </text>
+
+      <!-- Texto secundario -->
+      <text x="200" y="210" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#856464">
+        Intenta de nuevo con una imagen diferente
+      </text>
+
+      <!-- Decoración -->
+      <defs>
+        <pattern id="dots" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
+          <circle cx="10" cy="10" r="1" fill="#f5c6cb" opacity="0.5"/>
+        </pattern>
+      </defs>
+      <rect width="400" height="300" fill="url(#dots)"/>
+    </svg>

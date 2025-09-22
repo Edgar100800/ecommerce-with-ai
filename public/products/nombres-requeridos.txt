@@ -1,0 +1,47 @@
+# Lista de nombres de archivos requeridos para el ecommerce
+
+## Formato: producto-nombre-numero.jpg
+
+camiseta-blanca-1.jpg - Camiseta Blanca vista Principal
+camiseta-blanca-2.jpg - Camiseta Blanca vista Lateral
+camiseta-blanca-3.jpg - Camiseta Blanca vista Detalle
+
+jeans-slim-1.jpg - Jeans Slim vista Principal
+jeans-slim-2.jpg - Jeans Slim vista Lateral
+jeans-slim-3.jpg - Jeans Slim vista Detalle
+
+sudadera-capucha-1.jpg - Sudadera vista Principal
+sudadera-capucha-2.jpg - Sudadera vista Lateral
+sudadera-capucha-3.jpg - Sudadera vista Detalle
+
+chaqueta-denim-1.jpg - Chaqueta Denim vista Principal
+chaqueta-denim-2.jpg - Chaqueta Denim vista Lateral
+chaqueta-denim-3.jpg - Chaqueta Denim vista Detalle
+
+vestido-casual-1.jpg - Vestido Casual vista Principal
+vestido-casual-2.jpg - Vestido Casual vista Lateral
+vestido-casual-3.jpg - Vestido Casual vista Detalle
+
+camisa-formal-1.jpg - Camisa Formal vista Principal
+camisa-formal-2.jpg - Camisa Formal vista Lateral
+camisa-formal-3.jpg - Camisa Formal vista Detalle
+
+shorts-deportivos-1.jpg - Shorts vista Principal
+shorts-deportivos-2.jpg - Shorts vista Lateral
+shorts-deportivos-3.jpg - Shorts vista Detalle
+
+blazer-elegante-1.jpg - Blazer vista Principal
+blazer-elegante-2.jpg - Blazer vista Lateral
+blazer-elegante-3.jpg - Blazer vista Detalle
+
+## Notas:
+- Todos los archivos deben estar en public/products/
+- Formato recomendado: JPG o PNG
+- Tamaño mínimo: 800x800px
+- Tamaño recomendado: 1200x1200px
+- Aspecto: Cuadrado (1:1) preferiblemente
+
+## Para reemplazar:
+1. Guarda tu imagen real con el nombre exacto
+2. Sobrescribe el archivo placeholder
+3. Reinicia el servidor si es necesario
