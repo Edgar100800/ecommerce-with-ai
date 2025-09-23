@@ -3,10 +3,10 @@ import { Product } from "@/types";
 export const mockProducts: Product[] = [
   {
     id: "1",
-    name: "Camiseta Clásica Blanca",
+    name: "Campera deportiva Argentina",
     price: 29.99,
     description:
-      "Camiseta de algodón 100% orgánico, corte clásico y cómodo. Perfecta para el día a día con un estilo atemporal.",
+      "Campera de deportivo pesado blanca con mangas combinadas celestes, vivos gris y bolsillos. Con estampa Argentina en frente y espalda.",
     images: [
       "/products/camiseta-blanca-1.jpg",
       "/products/camiseta-blanca-2.jpg",
