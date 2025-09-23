@@ -177,11 +177,15 @@ Respeta todas las reglas. ${opts.prompt}
       // Extrae la primera imagen generada (inlineData)
       logClient("Procesando respuesta del modelo...", "loading");
       const parts = res.response?.candidates?.[0]?.content?.parts || [];
-      const imgPart = parts.find((p: unknown) => (p as any)?.inlineData?.data);
+      const imgPart = parts.find(
+        (p: unknown) =>
+          (p as { inlineData?: { data?: string } })?.inlineData?.data,
+      );
       if (!imgPart) {
         // a veces el modelo devuelve texto explicativo si algo fue bloqueado por safety
         const maybeText =
-          parts.find((p: unknown) => (p as any)?.text)?.text || "Sin detalles";
+          parts.find((p: unknown) => (p as { text?: string })?.text)?.text ||
+          "Sin detalles";
         logClient(
           `No se recibió imagen del modelo. Respuesta: ${maybeText}`,
           "warning",
@@ -192,7 +196,8 @@ Respeta todas las reglas. ${opts.prompt}
         };
       }
 
-      const imageData = (imgPart as any).inlineData.data as string;
+      const imageData = (imgPart as { inlineData: { data: string } }).inlineData
+        .data;
       logClient(
         `Imagen try-on generada exitosamente - Tamaño: ${imageData.length} chars`,
         "success",
@@ -235,7 +240,7 @@ Respeta todas las reglas. ${opts.prompt}
       logClient("Iniciando análisis de imagen con Gemini", "model");
       logClient(
         `Procesando imagen: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`,
-        "image",
+        "info",
       );
 
       const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });

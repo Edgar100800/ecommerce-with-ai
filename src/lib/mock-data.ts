@@ -40,9 +40,9 @@ export const mockProducts: Product[] = [
     description:
       "Sudadera con capucha de algodón mezcla, interior afelpado para mayor calidez y comodidad.",
     images: [
-      "/products/sudadera-capucha-1.svg",
-      "/products/sudadera-capucha-2.svg",
-      "/products/sudadera-capucha-3.svg",
+      "/products/sudadera-capucha-1.jpg",
+      "/products/sudadera-capucha-2.jpg",
+      "/products/sudadera-capucha-3.jpg",
     ],
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Gris", "Negro", "Azul Marino"],

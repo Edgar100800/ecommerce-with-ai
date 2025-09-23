@@ -1,6 +1,6 @@
 "use server";
 import "server-only";
-import { GoogleGenAI } from "@google/genai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import { getProductById } from "@/lib/mock-data";
 import type { TryOnResponse } from "@/types";
 import { z } from "zod";
@@ -31,7 +31,7 @@ if (!process.env.GEMINI_API_KEY) {
   throw new Error("GEMINI_API_KEY environment variable is not set.");
 }
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const ai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const TryOnSchema = z.object({
   productId: z.string().min(1, "ID de producto requerido"),
@@ -140,25 +140,20 @@ The output must be an image, not text.
     );
 
     // Llamar a Gemini con configuración para forzar imagen
-    const response = await ai.models.generateContent({
+    const model = ai.getGenerativeModel({
       model: "gemini-2.5-flash-image-preview",
-      contents: contents,
-      generationConfig: {
-        temperature: 0.4,
-        topK: 32,
-        topP: 1,
-        maxOutputTokens: 4096,
-      },
     });
 
-    if (!response.candidates?.[0]?.content?.parts) {
+    const response = await model.generateContent(contents);
+
+    if (!response.response.candidates?.[0]?.content?.parts) {
       throw new Error("No válid response from Gemini model");
     }
 
     // Procesar respuesta - buscar SOLO imagen
     let imageData = null;
 
-    for (const part of response.candidates[0].content.parts) {
+    for (const part of response.response.candidates[0].content.parts) {
       if (part.inlineData) {
         imageData = part.inlineData.data;
         logTryOn("Imagen generada por Gemini recibida", "success");
@@ -179,22 +174,18 @@ Generate an image showing the person from the first image wearing the clothing f
 Create a photorealistic virtual try-on result. Output must be an image only.
 `;
 
-      const retryResponse = await ai.models.generateContent({
+      const retryModel = ai.getGenerativeModel({
         model: "gemini-2.5-flash-image-preview",
-        contents: [
-          { text: retryPrompt },
-          ...contents.slice(1), // Solo las imágenes
-        ],
-        generationConfig: {
-          temperature: 0.2,
-          topK: 16,
-          topP: 0.8,
-        },
       });
 
+      const retryResponse = await retryModel.generateContent([
+        { text: retryPrompt },
+        ...contents.slice(1), // Solo las imágenes
+      ]);
+
       // Buscar imagen en segundo intento
-      if (retryResponse.candidates?.[0]?.content?.parts) {
-        for (const part of retryResponse.candidates[0].content.parts) {
+      if (retryResponse.response.candidates?.[0]?.content?.parts) {
+        for (const part of retryResponse.response.candidates[0].content.parts) {
           if (part.inlineData) {
             imageData = part.inlineData.data;
             logTryOn("Imagen obtenida en segundo intento", "success");
@@ -325,16 +316,18 @@ export async function analyzeUserPhoto(formData: FormData): Promise<{
       },
     ];
 
-    const response = await ai.models.generateContent({
+    const model = ai.getGenerativeModel({
       model: "gemini-2.5-flash-image-preview",
-      contents: contents,
     });
 
-    if (!response.candidates?.[0]?.content?.parts) {
+    const response = await model.generateContent(contents);
+
+    if (!response.response.candidates?.[0]?.content?.parts) {
       throw new Error("No valid response from Gemini model for analysis");
     }
 
-    const description = response.candidates[0].content.parts[0]?.text || "";
+    const description =
+      response.response.candidates[0].content.parts[0]?.text || "";
 
     if (description) {
       logTryOn("Análisis de imagen completado exitosamente", "success");
