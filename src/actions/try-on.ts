@@ -109,18 +109,51 @@ The output must be an image, not text.
       },
     });
 
-    // Cargar imagen del producto
+    // Cargar imagen del producto con fallbacks
     const productImageUrl = product.images[0];
     if (productImageUrl) {
       try {
-        const productImagePath = path.join(
-          process.cwd(),
-          "public",
-          productImageUrl,
-        );
-        if (fs.existsSync(productImagePath)) {
-          const productBuffer = fs.readFileSync(productImagePath);
-          const productBase64 = productBuffer.toString("base64");
+        let productBase64: string | null = null;
+
+        // Método 1: Intentar cargar desde archivo local
+        try {
+          const productImagePath = path.join(
+            process.cwd(),
+            "public",
+            productImageUrl,
+          );
+          if (fs.existsSync(productImagePath)) {
+            const productBuffer = fs.readFileSync(productImagePath);
+            productBase64 = productBuffer.toString("base64");
+            logTryOn("Imagen del producto cargada desde archivo local", "info");
+          }
+        } catch {
+          logTryOn(
+            "No se pudo cargar desde archivo local, intentando URL",
+            "info",
+          );
+        }
+
+        // Método 2: Si no se pudo cargar localmente, intentar desde URL
+        if (!productBase64) {
+          try {
+            const fullProductUrl = productImageUrl.startsWith("http")
+              ? productImageUrl
+              : `${process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"}${productImageUrl}`;
+
+            const productResponse = await fetch(fullProductUrl);
+            if (productResponse.ok) {
+              const productBuffer = await productResponse.arrayBuffer();
+              productBase64 = Buffer.from(productBuffer).toString("base64");
+              logTryOn("Imagen del producto cargada desde URL", "info");
+            }
+          } catch (urlError) {
+            logTryOn(`Error cargando desde URL: ${urlError}`, "warning");
+          }
+        }
+
+        // Si se obtuvo la imagen por cualquier método, añadirla al contenido
+        if (productBase64) {
           contents.push({
             inlineData: {
               mimeType: "image/jpeg",
@@ -128,9 +161,14 @@ The output must be an image, not text.
             },
           });
           logTryOn("Imágenes preparadas para análisis", "info");
+        } else {
+          logTryOn("No se pudo cargar la imagen del producto", "warning");
         }
       } catch (error) {
-        logTryOn(`Error cargando imagen del producto: ${error}`, "warning");
+        logTryOn(
+          `Error general cargando imagen del producto: ${error}`,
+          "warning",
+        );
       }
     }
 
@@ -195,32 +233,18 @@ Create a photorealistic virtual try-on result. Output must be an image only.
       }
     }
 
-    // Si finalmente tenemos imagen, guardarla
+    // Si finalmente tenemos imagen, devolverla como data URL
     if (imageData) {
-      const timestamp = Date.now();
-      const filename = `tryon-${timestamp}.png`;
-      const filepath = path.join(
-        process.cwd(),
-        "public",
-        "downloads",
-        filename,
-      );
+      logTryOn("Convirtiendo imagen a data URL", "info");
 
-      // Crear directorio si no existe
-      const downloadsDir = path.dirname(filepath);
-      if (!fs.existsSync(downloadsDir)) {
-        fs.mkdirSync(downloadsDir, { recursive: true });
-      }
+      // Crear data URL directamente sin guardar archivo
+      const dataUrl = `data:image/png;base64,${imageData}`;
 
-      const imageBuffer = Buffer.from(imageData, "base64");
-      fs.writeFileSync(filepath, imageBuffer);
-
-      logTryOn(`Imagen try-on guardada: /downloads/${filename}`, "success");
       logTryOn("Try-on completado exitosamente", "success");
 
       return {
         success: true,
-        result: `/downloads/${filename}`,
+        result: dataUrl,
       };
     }
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { TryOnResponse } from "@/types";
+import type { TryOnResponse } from "@/types";
 
 interface TryOnResultProps {
   result: TryOnResponse;
@@ -25,21 +25,41 @@ export function TryOnResult({
     // Crear enlace de descarga directo
     const link = document.createElement("a");
     link.href = result.result;
-    const filename =
-      result.result.split("/").pop() || `try-on-${Date.now()}.png`;
+    const filename = `try-on-${productName}-${Date.now()}.png`;
     link.download = filename;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
   };
 
+  // Función helper para convertir data URL a blob
+  const dataURLtoBlob = (dataURL: string): Blob => {
+    const arr = dataURL.split(",");
+    const mime = arr[0].match(/:(.*?);/)?.[1] || "image/png";
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  };
+
   const handleShare = async () => {
     if (!result.success || !result.result) return;
 
     try {
-      // Obtener imagen desde la ruta
-      const response = await fetch(result.result);
-      const blob = await response.blob();
+      let blob: Blob;
+
+      // Verificar si es data URL o URL normal
+      if (result.result.startsWith("data:")) {
+        blob = dataURLtoBlob(result.result);
+      } else {
+        // Obtener imagen desde la ruta
+        const response = await fetch(result.result);
+        blob = await response.blob();
+      }
+
       const file = new File([blob], `try-on-${productName}.png`, {
         type: "image/png",
       });
@@ -75,14 +95,17 @@ export function TryOnResult({
               Resultado de Prueba Virtual
             </h2>
             <button
+              type="button"
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Cerrar ventana"
             >
               <svg
                 className="w-6 h-6"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -136,6 +159,7 @@ export function TryOnResult({
                       className="w-5 h-5 text-green-600"
                       fill="currentColor"
                       viewBox="0 0 20 20"
+                      aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"
@@ -158,6 +182,7 @@ export function TryOnResult({
               {/* Action buttons */}
               <div className="grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={handleDownload}
                   className="flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
@@ -166,6 +191,7 @@ export function TryOnResult({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -178,6 +204,7 @@ export function TryOnResult({
                 </button>
 
                 <button
+                  type="button"
                   onClick={handleShare}
                   className="flex items-center justify-center gap-2 px-4 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
                 >
@@ -186,6 +213,7 @@ export function TryOnResult({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
+                    aria-hidden="true"
                   >
                     <path
                       strokeLinecap="round"
@@ -200,12 +228,14 @@ export function TryOnResult({
 
               <div className="grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={onTryAgain}
                   className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Probar otra vez
                 </button>
                 <button
+                  type="button"
                   onClick={onClose}
                   className="px-4 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
                 >
@@ -235,6 +265,7 @@ export function TryOnResult({
                       className="w-5 h-5 text-red-600"
                       fill="currentColor"
                       viewBox="0 0 20 20"
+                      aria-hidden="true"
                     >
                       <path
                         fillRule="evenodd"
@@ -271,12 +302,14 @@ export function TryOnResult({
 
               <div className="grid grid-cols-2 gap-3">
                 <button
+                  type="button"
                   onClick={onTryAgain}
                   className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
                   Intentar de nuevo
                 </button>
                 <button
+                  type="button"
                   onClick={onClose}
                   className="px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >
