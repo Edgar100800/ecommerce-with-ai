@@ -190,10 +190,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                         key={size}
                                         type="button"
                                         onClick={() => setSelectedSize(size)}
-                                        className={`px-3 py-2 text-sm text-black border rounded-lg transition-colors ${
+                                        className={`px-3 py-2 text-sm border rounded-lg transition-colors ${
                                             selectedSize === size
                                                 ? "border-gray-900 bg-gray-900 text-white"
-                                                : "border-gray-300 hover:border-gray-400"
+                                                : "border-gray-300 hover:border-gray-400 text-black"
                                         }`}
                                     >
                                         {size}
