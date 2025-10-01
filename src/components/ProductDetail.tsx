@@ -238,6 +238,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                         {/* Prueba virtual */}
                         <button
                             onClick={() => setShowUploadForm(true)}
+                            type="button"
                             disabled={!product.inStock}
                             className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                         >
@@ -247,6 +248,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
+                                <title>Prueba virtual</title>
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -260,6 +262,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                         {/* Agregar al carrito */}
                         <button
                             disabled={!product.inStock}
+                            type="button"
                             className="w-full bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
                         >
                             <svg
@@ -268,6 +271,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
                             >
+                                <title>Add to Cart</title>
                                 <path
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -291,6 +295,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
+                                    <title>
+                                        Shipping Free for orders over $50
+                                    </title>
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -307,6 +314,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
+                                    <title>
+                                        Shipping Free for orders over $50
+                                    </title>
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"
@@ -323,6 +333,9 @@ export function ProductDetail({ product }: ProductDetailProps) {
                                     stroke="currentColor"
                                     viewBox="0 0 24 24"
                                 >
+                                    <title>
+                                        Shipping Free for orders over $50
+                                    </title>
                                     <path
                                         strokeLinecap="round"
                                         strokeLinejoin="round"

@@ -75,13 +75,13 @@ export default function RootLayout({
                                     Inicio
                                 </Link>
                                 <Link
-                                    href="#productos"
+                                    href="/#productos"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
                                     Productos
                                 </Link>
                                 <Link
-                                    href="#como-funciona"
+                                    href="/#como-funciona"
                                     className="text-gray-600 hover:text-gray-900 transition-colors"
                                 >
                                     ¿Cómo funciona?
