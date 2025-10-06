@@ -52,8 +52,15 @@ export interface OpenRouterMessage {
     images?: OpenRouterImage[];
 }
 
+export interface OpenRouterLogprobs {
+    tokens?: string[];
+    token_logprobs?: number[];
+    top_logprobs?: Record<string, number>[];
+    text_offset?: number[];
+}
+
 export interface OpenRouterChoice {
-    logprobs: any;
+    logprobs: OpenRouterLogprobs | null;
     finish_reason: string;
     native_finish_reason: string;
     index: number;
