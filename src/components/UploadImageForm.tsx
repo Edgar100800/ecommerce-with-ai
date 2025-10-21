@@ -4,6 +4,7 @@ import { useState, useRef, useTransition } from "react";
 import Image from "next/image";
 import { tryOn } from "@/actions/try-on";
 import { TryOnResponse } from "@/types";
+import { TryOnLoadingAnimation } from "./TryOnLoadingAnimation";
 
 interface UploadImageFormProps {
   productId: string;
@@ -106,9 +107,13 @@ export function UploadImageForm({
   };
 
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6">
+    <>
+      {isPending && (
+        <TryOnLoadingAnimation productName={productName} isFullScreen={true} />
+      )}
+      <div className={`fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 transition-opacity duration-300 ${isPending ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+        <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-semibold text-gray-900">
@@ -234,6 +239,7 @@ export function UploadImageForm({
                 ref={fileInputRef}
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/webp"
+                capture="environment"
                 onChange={handleFileSelect}
                 className="hidden"
                 disabled={isPending}
@@ -429,8 +435,9 @@ export function UploadImageForm({
               </button>
             </div>
           </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
