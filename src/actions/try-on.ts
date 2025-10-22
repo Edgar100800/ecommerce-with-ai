@@ -321,7 +321,7 @@ Perform the clothing modification now.`,
                 // Race between API call and timeout (45 seconds per image)
                 const response = (await Promise.race([
                     openai.chat.completions.create({
-                        model: "google/gemini-2.5-flash-image-preview",
+                        model: "google/gemini-2.5-flash-image",
                         messages,
                         max_tokens: 4000,
                         temperature: Math.min(temperature, 1.0),
@@ -464,7 +464,7 @@ Perform the clothing modification now.`,
 
         try {
             const simpleTestResponse = await openai.chat.completions.create({
-                model: "google/gemini-2.5-flash-image-preview",
+                model: "google/gemini-2.5-flash-image",
                 messages: [
                     {
                         role: "user",
@@ -497,7 +497,7 @@ Perform the clothing modification now.`,
         );
         return {
             success: false,
-            error: "El modelo Gemini 2.5 Flash Image Preview a través de OpenRouter no pudo generar una imagen. Esto puede deberse a limitaciones del modelo o configuración del API.",
+            error: "El modelo Gemini 2.5 Flash Image a través de OpenRouter no pudo generar una imagen. Esto puede deberse a limitaciones del modelo o configuración del API.",
         };
     } catch (error) {
         const processingTime = Date.now() - startTime;
@@ -599,7 +599,7 @@ export async function analyzeUserPhoto(formData: FormData): Promise<{
         ];
 
         const response = await openai.chat.completions.create({
-            model: "google/gemini-2.5-flash-image-preview",
+            model: "google/gemini-2.5-flash-image",
             messages,
             max_tokens: 300,
             temperature: 0.3,
