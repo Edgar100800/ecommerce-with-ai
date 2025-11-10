@@ -26,6 +26,7 @@ export function UploadImageForm({
   const [error, setError] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const cameraInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -223,20 +224,20 @@ export function UploadImageForm({
 
             {/* Upload area */}
             <div
-              role="button"
-              tabIndex={0}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  fileInputRef.current?.click();
-                }
-              }}
-              className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center hover:border-blue-400 transition-colors cursor-pointer"
-              onClick={() => fileInputRef.current?.click()}
+              className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center transition-colors"
             >
               <input
                 ref={fileInputRef}
+                type="file"
+                accept="image/jpeg,image/jpg,image/png,image/webp"
+                onChange={handleFileSelect}
+                className="hidden"
+                disabled={isPending}
+              />
+              <input
+                ref={cameraInputRef}
                 type="file"
                 accept="image/jpeg,image/jpg,image/png,image/webp"
                 capture="environment"
@@ -282,6 +283,9 @@ export function UploadImageForm({
                         if (fileInputRef.current) {
                           fileInputRef.current.value = "";
                         }
+                        if (cameraInputRef.current) {
+                          cameraInputRef.current.value = "";
+                        }
                       }}
                       className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                       disabled={isPending}
@@ -291,7 +295,7 @@ export function UploadImageForm({
                   </div>
                 </div>
               ) : (
-                <div className="space-y-3">
+                <div className="space-y-4">
                   <svg
                     className="w-12 h-12 text-gray-400 mx-auto"
                     fill="none"
@@ -307,16 +311,75 @@ export function UploadImageForm({
                     />
                   </svg>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">
+                    <p className="text-sm font-medium text-gray-900 mb-1">
                       Sube tu foto
                     </p>
-                    <p className="text-xs text-gray-500">
-                      Arrastra y suelta o haz clic para seleccionar
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      JPG, PNG, WebP (máx. 5MB)
+                    <p className="text-xs text-gray-500 mb-4">
+                      Elige cómo quieres agregar tu foto
                     </p>
                   </div>
+                  
+                  {/* Button group */}
+                  <div className="flex gap-3 max-w-md mx-auto">
+                    <button
+                      type="button"
+                      onClick={() => cameraInputRef.current?.click()}
+                      disabled={isPending}
+                      className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium">Tomar foto</span>
+                    </button>
+                    
+                    <button
+                      type="button"
+                      onClick={() => fileInputRef.current?.click()}
+                      disabled={isPending}
+                      className="flex-1 px-4 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2"
+                    >
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <span className="text-sm font-medium">Galería</span>
+                    </button>
+                  </div>
+                  
+                  <p className="text-xs text-gray-400 mt-3">
+                    JPG, PNG, WebP (máx. 5MB)
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">
+                    También puedes arrastrar y soltar una imagen aquí
+                  </p>
                 </div>
               )}
             </div>
